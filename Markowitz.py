@@ -62,6 +62,8 @@ class EqualWeightPortfolio:
         """
         TODO: Complete Task 1 Below
         """
+        self.portfolio_weights.iloc[:, :] = 1/11
+        self.portfolio_weights.iloc[:, 0] = 0
 
         """
         TODO: Complete Task 1 Above
@@ -114,7 +116,13 @@ class RiskParityPortfolio:
         TODO: Complete Task 2 Below
         """
 
-
+        for i in range(51, len(self.portfolio_weights)):
+            self.portfolio_weights.iloc[i, :] = df_returns.iloc[i-self.lookback: i, :].std()
+            tot = sum(1 / self.portfolio_weights.iloc[i, j] for j in range(1, 12))
+            for j in range(1, 12):
+                self.portfolio_weights.iloc[i, j] = (1 / self.portfolio_weights.iloc[i, j]) / tot
+        self.portfolio_weights.iloc[:, 0] = 0
+        self.portfolio_weights.fillna(0, inplace=True)
 
         """
         TODO: Complete Task 2 Above
@@ -191,7 +199,9 @@ class MeanVariancePortfolio:
                 # Sample Code: Initialize Decision w and the Objective
                 # NOTE: You can modify the following code
                 w = model.addMVar(n, name="w", ub=1)
-                model.setObjective(w.sum(), gp.GRB.MAXIMIZE)
+                model.addConstr(w.sum() == 1, name='weight_sum');
+                model.addConstr(w >= 0, name='weight_sum');
+                model.setObjective(w @ mu - self.gamma / 2 * w @ Sigma@ w, gp.GRB.MAXIMIZE)
 
                 """
                 TODO: Complete Task 3 Above
