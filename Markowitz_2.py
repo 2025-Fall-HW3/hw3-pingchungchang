@@ -70,7 +70,20 @@ class MyPortfolio:
         """
         TODO: Complete Task 4 Below
         """
-        
+        '''
+        print('self.returns = ')
+        print(self.returns)
+        print('self.exclude = ')
+        print(self.exclude)
+        print('self.price = ')
+        print(self.price)
+        print('df = ')
+        print(df)
+        '''
+        # self.portfolio_weights.iloc[:, :] = 0.25 / 11;
+        self.portfolio_weights.iloc[:, 6] = 1
+        self.portfolio_weights.iloc[:, 0] = 0
+
         
         """
         TODO: Complete Task 4 Above
